@@ -1,98 +1,222 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from "expo-router";
+import React from "react";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+const { width } = Dimensions.get("window");
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <View style={styles.container}>
+      {/* Decorative circles */}
+      <View style={styles.topCircle} />
+      <View style={styles.bottomCircle} />
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <View style={styles.content}>
+        {/* Logo */}
+        <View style={styles.logo}>
+          <Text style={styles.logoText}>TRAGO</Text>
+        </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+        {/* Welcome */}
+        <Text style={styles.welcome}>WELCOME TO TRAGO</Text>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        {/* Main heading */}
+        <Text style={styles.heading}>
+          Learn a Language.{"\n"}
+          <Text style={styles.headingPink}>Open a New World.</Text>
+        </Text>
+
+        {/* Description */}
+        <Text style={styles.description}>
+          Hello, Language Learner! 👋{"\n"}
+          Start your learning journey and build your skills step by step.
+        </Text>
+
+        {/* Buttons */}
+        <View style={styles.buttons}>
+          <Pressable
+            style={({ pressed }) => [
+              styles.loginButton,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={() => router.push("./login")}
+          >
+            <Text style={styles.loginText}>Login</Text>
+          </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.signupButton,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={() => router.push("./signup")}
+          >
+            <Text style={styles.signupText}>Sign Up</Text>
+          </Pressable>
+        </View>
+
+        {/* Bottom text */}
+        <Text style={styles.bottomText}>
+          Your language journey starts here ✦
+        </Text>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: "#fff5f9",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+    paddingHorizontal: 25,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+
+  topCircle: {
+    position: "absolute",
+    width: 350,
+    height: 350,
+    borderRadius: 175,
+    backgroundColor: "#f6a8ca",
+    top: -170,
+    right: -120,
+    opacity: 0.45,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+
+  bottomCircle: {
+    position: "absolute",
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    backgroundColor: "#e83e8c",
+    bottom: -180,
+    left: -120,
+    opacity: 0.15,
   },
-  title: {
-    textAlign: 'center',
+
+  content: {
+    width: "100%",
+    maxWidth: 750,
+    alignItems: "center",
+    zIndex: 2,
   },
-  code: {
-    textTransform: 'uppercase',
+
+  logo: {
+    width: 70,
+    height: 70,
+    borderRadius: 22,
+    backgroundColor: "#d63384",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 25,
+
+    shadowColor: "#d63384",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 18,
+    elevation: 8,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  logoText: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "800",
+  },
+
+  welcome: {
+    color: "#d63384",
+    fontSize: 13,
+    fontWeight: "800",
+    letterSpacing: 3,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+
+  heading: {
+    color: "#40152d",
+    fontSize: width < 600 ? 44 : 60,
+    lineHeight: width < 600 ? 50 : 66,
+    fontWeight: "800",
+    textAlign: "center",
+    letterSpacing: -1,
+    marginBottom: 25,
+  },
+
+  headingPink: {
+    color: "#d63384",
+  },
+
+  description: {
+    maxWidth: 570,
+    color: "#80566c",
+    fontSize: 17,
+    lineHeight: 29,
+    textAlign: "center",
+  },
+
+  buttons: {
+    flexDirection: width < 600 ? "column" : "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 18,
+    marginTop: 40,
+  },
+
+  loginButton: {
+    width: width < 600 ? 220 : 160,
+    paddingVertical: 16,
+    borderRadius: 15,
+    backgroundColor: "#d63384",
+
+    shadowColor: "#d63384",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+
+  signupButton: {
+    width: width < 600 ? 220 : 160,
+    paddingVertical: 14,
+    borderRadius: 15,
+    backgroundColor: "#ffffff",
+    borderWidth: 2,
+    borderColor: "#e83e8c",
+  },
+
+  loginText: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+
+  signupText: {
+    color: "#d63384",
+    fontSize: 16,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+
+  buttonPressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.97 }],
+  },
+
+  bottomText: {
+    marginTop: 35,
+    color: "#a87591",
+    fontSize: 14,
+    textAlign: "center",
   },
 });
