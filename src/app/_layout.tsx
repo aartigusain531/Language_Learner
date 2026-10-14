@@ -1,3 +1,16 @@
+import { Stack } from "expo-router";
+import React from "react";
+
+export default function RootLayout() {
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        animation: "fade",
+      }}
+    />
+  );
+}
 import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useColorScheme } from 'react-native';
