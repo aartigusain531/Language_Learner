@@ -1,6 +1,13 @@
-import { useRouter } from "expo-router";
+
 import React from "react";
-import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
+import { useRouter } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
@@ -9,56 +16,40 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Decorative circles */}
-      <View style={styles.topCircle} />
-      <View style={styles.bottomCircle} />
+      <View style={styles.circle} />
 
       <View style={styles.content}>
-        {/* Logo */}
         <View style={styles.logo}>
           <Text style={styles.logoText}>TRAGO</Text>
         </View>
 
-        {/* Welcome */}
         <Text style={styles.welcome}>WELCOME TO TRAGO</Text>
 
-        {/* Main heading */}
         <Text style={styles.heading}>
           Learn a Language.{"\n"}
-          <Text style={styles.headingPink}>Open a New World.</Text>
+          <Text style={styles.pink}>Open a New World.</Text>
         </Text>
 
-        {/* Description */}
         <Text style={styles.description}>
           Hello, Language Learner! 👋{"\n"}
           Start your learning journey and build your skills step by step.
         </Text>
 
-        {/* Buttons */}
-        <View style={styles.buttons}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.loginButton,
-              pressed && styles.buttonPressed,
-            ]}
-            onPress={() => router.push("./login")}
-          >
-            <Text style={styles.loginText}>Login</Text>
-          </Pressable>
+        <Pressable
+          style={styles.loginButton}
+          onPress={() => router.push("/login")}
+        >
+          <Text style={styles.loginText}>Login</Text>
+        </Pressable>
 
-          <Pressable
-            style={({ pressed }) => [
-              styles.signupButton,
-              pressed && styles.buttonPressed,
-            ]}
-            onPress={() => router.push("./signup")}
-          >
-            <Text style={styles.signupText}>Sign Up</Text>
-          </Pressable>
-        </View>
+        <Pressable
+          style={styles.signupButton}
+          onPress={() => router.push("/signup")}
+        >
+          <Text style={styles.signupText}>Sign Up</Text>
+        </Pressable>
 
-        {/* Bottom text */}
-        <Text style={styles.bottomText}>
+        <Text style={styles.footer}>
           Your language journey starts here ✦
         </Text>
       </View>
@@ -69,154 +60,105 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff5f9",
+    backgroundColor: "#FFF5F9",
     justifyContent: "center",
     alignItems: "center",
+    padding: 25,
     overflow: "hidden",
-    paddingHorizontal: 25,
   },
-
-  topCircle: {
-    position: "absolute",
-    width: 350,
-    height: 350,
-    borderRadius: 175,
-    backgroundColor: "#f6a8ca",
-    top: -170,
-    right: -120,
-    opacity: 0.45,
-  },
-
-  bottomCircle: {
+  circle: {
     position: "absolute",
     width: 300,
     height: 300,
     borderRadius: 150,
-    backgroundColor: "#e83e8c",
-    bottom: -180,
-    left: -120,
-    opacity: 0.15,
+    backgroundColor: "#F6A8CA",
+    top: -150,
+    right: -100,
   },
-
   content: {
     width: "100%",
-    maxWidth: 750,
+    maxWidth: 600,
     alignItems: "center",
-    zIndex: 2,
   },
-
   logo: {
+    backgroundColor: "#D63384",
     width: 70,
     height: 70,
     borderRadius: 22,
-    backgroundColor: "#d63384",
+    
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 25,
 
-    shadowColor: "#d63384",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 18,
-    elevation: 8,
   },
 
   logoText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "800",
+    color: "white",
+    fontSize: 17,
+    fontWeight: "bold",
   },
 
   welcome: {
-    color: "#d63384",
+    color: "#D63384",
     fontSize: 13,
-    fontWeight: "800",
-    letterSpacing: 3,
-    marginBottom: 20,
-    textAlign: "center",
+    fontWeight: "bold",
+    letterSpacing: 2,
+    marginBottom: 18,
   },
 
   heading: {
-    color: "#40152d",
-    fontSize: width < 600 ? 44 : 60,
-    lineHeight: width < 600 ? 50 : 66,
-    fontWeight: "800",
+    color: "#40152D",
+    fontSize: width < 600 ? 32 : 45,
+    fontWeight: "bold",
     textAlign: "center",
-    letterSpacing: -1,
-    marginBottom: 25,
+    marginBottom: 20,
   },
-
-  headingPink: {
-    color: "#d63384",
+  pink: {
+    color: "#D63384",
   },
 
   description: {
-    maxWidth: 570,
-    color: "#80566c",
-    fontSize: 17,
-    lineHeight: 29,
+    color: "#80566C",
+    fontSize: 16,
+    lineHeight: 25,
     textAlign: "center",
-  },
-
-  buttons: {
-    flexDirection: width < 600 ? "column" : "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 18,
-    marginTop: 40,
+    marginBottom: 30,
   },
 
   loginButton: {
-    width: width < 600 ? 220 : 160,
-    paddingVertical: 16,
-    borderRadius: 15,
-    backgroundColor: "#d63384",
-
-    shadowColor: "#d63384",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 6,
-  },
-
-  signupButton: {
-    width: width < 600 ? 220 : 160,
-    paddingVertical: 14,
-    borderRadius: 15,
-    backgroundColor: "#ffffff",
-    borderWidth: 2,
-    borderColor: "#e83e8c",
+    width: "100%",
+    maxWidth: 300,
+    backgroundColor: "#D63384",
+    padding: 16,
+    borderRadius: 14,
+    marginBottom: 14,
   },
 
   loginText: {
-    color: "#ffffff",
+    color: "white",
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: "bold",
     textAlign: "center",
   },
-
+  signupButton: {
+    width: "100%",
+    maxWidth: 300,
+    backgroundColor: "white",
+    borderWidth: 2,
+    borderColor: "#D63384",
+    padding: 14,
+    borderRadius: 14,
+  },
   signupText: {
-    color: "#d63384",
+    color: "#D63384",
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: "bold",
     textAlign: "center",
   },
-
-  buttonPressed: {
-    opacity: 0.8,
-    transform: [{ scale: 0.97 }],
-  },
-
-  bottomText: {
-    marginTop: 35,
-    color: "#a87591",
-    fontSize: 14,
+  footer: {
+    color: "#A87591",
+    fontSize: 13,
+    marginTop: 30,
     textAlign: "center",
   },
 });

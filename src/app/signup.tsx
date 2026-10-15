@@ -1,15 +1,18 @@
-import { useRouter } from "expo-router";
+
 import React, { useState } from "react";
 import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
+  View,
   Text,
   TextInput,
-  View,
+  Pressable,
+  StyleSheet,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from "react-native";
+import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignupScreen() {
   const router = useRouter();
@@ -19,6 +22,49 @@ export default function SignupScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const handleSignup = async () => {
+    if (
+      !name.trim() ||
+      !email.trim() ||
+      !password ||
+      !confirmPassword
+    ) {
+      Alert.alert("Missing Details", "Please fill in all fields.");
+      return;
+    }
+
+    if (!email.includes("@") || !email.includes(".")) {
+      Alert.alert("Invalid Email", "Please enter a valid email address.");
+      return;
+    }
+
+    if (password.length < 6) {
+      Alert.alert(
+        "Weak Password",
+        "Your password must contain at least 6 characters."
+      );
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert("Password Mismatch", "Your passwords do not match.");
+      return;
+    }
+
+    try {
+      await AsyncStorage.multiSet([
+        ["userName", name.trim()],
+        ["userEmail", email.trim().toLowerCase()],
+      ]);
+
+      Alert.alert("Success", "Your account details have been saved!");
+
+      router.replace("/dashboard");
+    } catch {
+      Alert.alert("Error", "Unable to save your details. Please try again.");
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -27,94 +73,78 @@ export default function SignupScreen() {
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
       >
         <View style={styles.card}>
-          {/* Logo */}
           <View style={styles.logo}>
-            <Text style={styles.logoText}>TRAGO</Text>
+            <Text style={styles.logoText}>T</Text>
           </View>
 
           <Text style={styles.title}>Create Account</Text>
-
           <Text style={styles.subtitle}>
-            Start your language learning journey with TRAGO.
+            Join TRAGO and start learning a new language!
           </Text>
 
-          {/* Name */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Name</Text>
+          <Text style={styles.label}>Full Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your name"
+            placeholderTextColor="#A58A99"
+            value={name}
+            onChangeText={setName}
+            autoCapitalize="words"
+          />
 
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your name"
-              placeholderTextColor="#b995a7"
-              value={name}
-              onChangeText={setName}
-            />
-          </View>
+          <Text style={styles.label}>Email Address</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your email"
+            placeholderTextColor="#A58A99"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
 
-          {/* Email */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Create a password"
+            placeholderTextColor="#A58A99"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            autoCapitalize="none"
+          />
 
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your email"
-              placeholderTextColor="#b995a7"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
+          <Text style={styles.label}>Confirm Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Re-enter your password"
+            placeholderTextColor="#A58A99"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry
+            autoCapitalize="none"
+          />
 
-          {/* Password */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Password</Text>
-
-            <TextInput
-              style={styles.input}
-              placeholder="Create a password"
-              placeholderTextColor="#b995a7"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-          </View>
-
-          {/* Confirm password */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Confirm Password</Text>
-
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm your password"
-              placeholderTextColor="#b995a7"
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              secureTextEntry
-            />
-          </View>
-
-          {/* Sign Up */}
-          <Pressable style={styles.signupButton}>
-            <Text style={styles.signupText}>Create Account</Text>
+          <Pressable
+            style={styles.signupButton}
+            onPress={handleSignup}
+          >
+            <Text style={styles.signupButtonText}>Create Account</Text>
           </Pressable>
 
-          {/* Login */}
-          <View style={styles.loginRow}>
-            <Text style={styles.loginQuestion}>Already have an account?</Text>
-
-            <Pressable onPress={() => router.push("./login")}>
-              <Text style={styles.loginLink}> Login</Text>
+          <View style={styles.row}>
+            <Text style={styles.bottomText}>Already have an account? </Text>
+            <Pressable onPress={() => router.push("/login")}>
+              <Text style={styles.link}>Login</Text>
             </Pressable>
           </View>
 
-          {/* Back */}
           <Pressable
-            style={styles.backButton}
             onPress={() => router.replace("/")}
+            style={styles.backButton}
           >
             <Text style={styles.backText}>← Back to Home</Text>
           </Pressable>
@@ -127,127 +157,104 @@ export default function SignupScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff5f9",
+    backgroundColor: "#FFF5F9",
   },
-
   scrollContent: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 25,
+    padding: 24,
   },
-
   card: {
     width: "100%",
-    maxWidth: 450,
-    backgroundColor: "#ffffff",
-    borderRadius: 25,
-    padding: 30,
-
-    shadowColor: "#d63384",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 20,
+    maxWidth: 430,
+    backgroundColor: "#FFFFFF",
+    padding: 28,
+    borderRadius: 24,
     elevation: 5,
+    shadowColor: "#40152D",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
   },
-
   logo: {
-    width: 65,
-    height: 65,
+    width: 60,
+    height: 60,
     borderRadius: 20,
-    backgroundColor: "#d63384",
+    backgroundColor: "#D63384",
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
     marginBottom: 20,
   },
-
   logoText: {
-    color: "#ffffff",
-    fontSize: 15,
-    fontWeight: "800",
-  },
-
-  title: {
-    color: "#40152d",
+    color: "#FFFFFF",
     fontSize: 30,
-    fontWeight: "800",
+    fontWeight: "bold",
+  },
+  title: {
+    color: "#40152D",
+    fontSize: 28,
+    fontWeight: "bold",
     textAlign: "center",
   },
-
   subtitle: {
-    color: "#80566c",
-    fontSize: 15,
-    lineHeight: 22,
-    textAlign: "center",
-    marginTop: 8,
-    marginBottom: 30,
-  },
-
-  inputContainer: {
-    marginBottom: 17,
-  },
-
-  label: {
-    color: "#4a1832",
+    color: "#80566C",
     fontSize: 14,
-    fontWeight: "700",
+    textAlign: "center",
+    marginTop: 10,
+    marginBottom: 24,
+    lineHeight: 21,
+  },
+  label: {
+    color: "#40152D",
+    fontSize: 14,
+    fontWeight: "600",
     marginBottom: 8,
   },
-
   input: {
     height: 52,
-    borderWidth: 1.5,
-    borderColor: "#f0c1d5",
-    borderRadius: 13,
-    paddingHorizontal: 15,
-    color: "#4a1832",
-    backgroundColor: "#fffafd",
-    fontSize: 15,
+    borderWidth: 1,
+    borderColor: "#F0C7DA",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    marginBottom: 18,
+    color: "#40152D",
+    backgroundColor: "#FFFAFC",
   },
-
   signupButton: {
-    height: 52,
-    borderRadius: 13,
-    backgroundColor: "#d63384",
-    justifyContent: "center",
+    backgroundColor: "#D63384",
+    padding: 16,
+    borderRadius: 12,
     alignItems: "center",
-    marginTop: 8,
+    marginTop: 4,
   },
-
-  signupText: {
-    color: "#ffffff",
+  signupButtonText: {
+    color: "#FFFFFF",
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: "bold",
   },
-
-  loginRow: {
+  row: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 25,
+    flexWrap: "wrap",
+    marginTop: 24,
   },
-
-  loginQuestion: {
-    color: "#80566c",
+  bottomText: {
+    color: "#80566C",
     fontSize: 14,
   },
-
-  loginLink: {
-    color: "#d63384",
+  link: {
+    color: "#D63384",
+    fontWeight: "bold",
     fontSize: 14,
-    fontWeight: "700",
   },
-
   backButton: {
     alignItems: "center",
-    marginTop: 25,
+    marginTop: 24,
   },
-
   backText: {
-    color: "#a87591",
+    color: "#80566C",
     fontSize: 14,
   },
 });
