@@ -42,13 +42,7 @@ export default function HomeScreen() {
           <Text style={styles.loginText}>Login</Text>
         </Pressable>
 
-        <Pressable
-          style={styles.signupButton}
-          onPress={() => router.push("/signup")}
-        >
-          <Text style={styles.signupText}>Sign Up</Text>
-        </Pressable>
-
+      
         <Text style={styles.footer}>
           Your language journey starts here ✦
         </Text>

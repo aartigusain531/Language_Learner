@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   View,
@@ -7,16 +6,12 @@ import {
   Pressable,
   StyleSheet,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginScreen() {
   const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -27,8 +22,10 @@ export default function LoginScreen() {
     }
 
     try {
-      await AsyncStorage.setItem("userEmail", email.trim().toLowerCase());
-
+      await AsyncStorage.setItem(
+        "userEmail",
+        email.trim().toLowerCase()
+      );
       router.replace("/dashboard");
     } catch {
       Alert.alert("Error", "Unable to save your details. Please try again.");
@@ -36,70 +33,52 @@ export default function LoginScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
-      >
-        <View style={styles.card}>
-          <View style={styles.logo}>
-            <Text style={styles.logoText}>T</Text>
-          </View>
-
-          <Text style={styles.title}>Welcome Back!</Text>
-          <Text style={styles.subtitle}>
-            Log in to continue your language journey.
-          </Text>
-
-          <Text style={styles.label}>Email Address</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your email"
-            placeholderTextColor="#A58A99"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password"
-            placeholderTextColor="#A58A99"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoCapitalize="none"
-          />
-
-          <Pressable
-            style={styles.loginButton}
-            onPress={handleLogin}
-          >
-            <Text style={styles.loginButtonText}>Login</Text>
-          </Pressable>
-
-          <View style={styles.row}>
-            <Text style={styles.bottomText}>Don't have an account? </Text>
-            <Pressable onPress={() => router.push("/signup")}>
-              <Text style={styles.link}>Sign Up</Text>
-            </Pressable>
-          </View>
-
-          <Pressable
-            onPress={() => router.replace("/")}
-            style={styles.backButton}
-          >
-            <Text style={styles.backText}>← Back to Home</Text>
-          </Pressable>
+    <View style={styles.container}>
+      <View style={styles.card}>
+        <View style={styles.logo}>
+          <Text style={styles.logoText}>T</Text>
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+
+        <Text style={styles.title}>Welcome Back!</Text>
+        <Text style={styles.subtitle}>
+          Log in to continue your language journey.
+        </Text>
+
+        <Text style={styles.label}>Email Address</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your email"
+          placeholderTextColor="#A58A99"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your password"
+          placeholderTextColor="#A58A99"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          autoCapitalize="none"
+        />
+
+        <Pressable style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Login</Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => router.replace("/")}
+          style={styles.backButton}
+        >
+          <Text style={styles.backText}>← Back to Home</Text>
+        </Pressable>
+      </View>
+    </View>
   );
 }
 
@@ -107,16 +86,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF5F9",
-  },
-  scrollContent: {
-    flexGrow: 1,
     justifyContent: "center",
-    alignItems: "center",
     padding: 24,
   },
   card: {
     width: "100%",
     maxWidth: 430,
+    alignSelf: "center",
     backgroundColor: "#FFFFFF",
     padding: 28,
     borderRadius: 24,
@@ -182,21 +158,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "bold",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "center",
-    flexWrap: "wrap",
-    marginTop: 24,
-  },
-  bottomText: {
-    color: "#80566C",
-    fontSize: 14,
-  },
-  link: {
-    color: "#D63384",
-    fontWeight: "bold",
-    fontSize: 14,
   },
   backButton: {
     alignItems: "center",
