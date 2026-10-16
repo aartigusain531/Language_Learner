@@ -29,7 +29,7 @@ export default function LoginScreen() {
     try {
       await AsyncStorage.setItem("userEmail", email.trim().toLowerCase());
 
-      router.replace("/dashboard");
+      router.replace("/Dashboard");
     } catch {
       Alert.alert("Error", "Unable to save your details. Please try again.");
     }

@@ -59,7 +59,7 @@ export default function SignupScreen() {
 
       Alert.alert("Success", "Your account details have been saved!");
 
-      router.replace("/dashboard");
+      router.replace("/Dashboard");
     } catch {
       Alert.alert("Error", "Unable to save your details. Please try again.");
     }
