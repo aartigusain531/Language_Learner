@@ -26,7 +26,7 @@ export default function LoginScreen() {
         "userEmail",
         email.trim().toLowerCase()
       );
-      router.replace("/dashboard");
+      router.replace("/language");
     } catch {
       Alert.alert("Error", "Unable to save your details. Please try again.");
     }
