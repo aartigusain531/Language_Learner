@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   },
 
   options: {
-    width: "100%",
+    width: "250%",
     alignItems: "center",
     gap: 16,
   },
@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
   selected: {
     backgroundColor: "#d3c7fb",
     borderColor: "#ac8ef3",
+    borderWidth: 4,
   },
 
   optionText: {
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
   },
 
   continueButton: {
-    width: "30%",
+    width: "80%",
     backgroundColor: "#F66B55",
     padding: 17,
     borderRadius: 16,

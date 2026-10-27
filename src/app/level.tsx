@@ -219,9 +219,9 @@ const styles = StyleSheet.create({
   },
   eyebrow: {
     fontSize: 11,
-    fontWeight: "800",
+    fontWeight: "900",
     letterSpacing: 2,
-    color: "#D36B96",
+    color: "#6bb4d3",
     marginBottom: 10,
   },
   title: {
@@ -252,7 +252,8 @@ const styles = StyleSheet.create({
     minHeight: 104,
   },
   activeCard: {
-    borderColor: "#E96F9F",
+    borderColor: "#13c5ed",
+    borderWidth:4,
     backgroundColor: "#FFF9FC",
     shadowColor: "#D96D99",
     shadowOffset: { width: 0, height: 5 },
@@ -302,7 +303,7 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: "#E96F9F",
+    backgroundColor: "#a46fe9",
   },
   tip: {
     flexDirection: "row",
@@ -326,7 +327,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#E96F9F",
+    backgroundColor: "#f8478e",
     borderRadius: 18,
     paddingVertical: 18,
     marginTop: 24,
@@ -352,6 +353,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     letterSpacing: 2,
     fontWeight: "700",
-    color: "#B6A2AE",
+    color: "#161516",
   },
 });
