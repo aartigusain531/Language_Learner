@@ -15,15 +15,18 @@ import { router } from "expo-router";
 
 const LANGUAGES = [
   { name: "English", flag: "🇬🇧", native: "English" },
-  { name: "Japanese", flag: "🇯🇵", native: "日本語" },
-  { name: "French", flag: "🇫🇷", native: "Français" },
-  { name: "Korean", flag: "🇰🇷", native: "한국어" },
   { name: "Spanish", flag: "🇪🇸", native: "Español" },
-  { name: "Hindi", flag: "🇮🇳", native: "हिन्दी" },
+  { name: "French", flag: "🇫🇷", native: "Français" },
+  { name: "Japanese", flag: "🇯🇵", native: "日本語" },
   { name: "German", flag: "🇩🇪", native: "Deutsch" },
-  { name: "Thai", flag: "🇹🇭", native: "ภาษาไทย" },
+  { name: "Korean", flag: "🇰🇷", native: "한국어" },
   { name: "Italian", flag: "🇮🇹", native: "Italiano" },
+  { name: "Hindi", flag: "🇮🇳", native: "हिन्दी" },
+
+  { name: "Thai", flag: "🇹🇭", native: "ภาษาไทย" },
+
   { name: "Dutch", flag: "🇳🇱", native: "Nederlands" },
+
 ];
 
 export default function LanguagesScreen() {
@@ -172,7 +175,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    padding: 12,
+    padding: 8,
   },
 
   whitePanel: {
@@ -186,7 +189,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     justifyContent: "center",
-    paddingTop: 35,
+    paddingTop: 10,
     paddingBottom: 35,
   },
 
@@ -299,7 +302,7 @@ const styles = StyleSheet.create({
   },
 
   continueButton: {
-    marginTop: 32,
+    marginTop: 15,
     minHeight: 55,
     borderRadius: 16,
     backgroundColor: "#2678F3",

@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: "center",
     paddingHorizontal: 24,
-    paddingTop: 76,
+    paddingTop: 30,
     paddingBottom: 30,
   },
 
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   options: {
     width: "250%",
     alignItems: "center",
-    gap: 16,
+    gap: 10,
   },
 
   option: {
