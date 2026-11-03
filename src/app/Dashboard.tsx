@@ -14,16 +14,16 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const PINK = "#E8569A";
-const PINK_DARK = "#D94387";
-const PINK_LIGHT = "#FDE4F0";
-const PINK_BG = "#FFF8FB";
-const PINK_SOFT = "#FFF0F6";
-const TEXT = "#211A21";
-const MUTED = "#8B7F88";
-const BORDER = "#F1DCE7";
+const PINK = "#D85F9A";
+const PINK_DARK = "#C94F89";
+const PINK_LIGHT = "#f8cfe3";
+const PINK_BG = "#ece0f8";
+const PINK_SOFT = "#F8EAF2";
+const TEXT = "#29384F";
+const MUTED = "#77869A";
+const BORDER = "#DCD2EA";
 const WHITE = "#FFFFFF";
-const GREEN = "#39A86B";
+const GREEN = "#4AAB83";
 
 type Language = {
   name: string;
@@ -123,7 +123,7 @@ const PAGE_DETAILS: Record<
   conversation: { icon: "💬", title: "Conversation", description: "Practice real conversations." },
   progress: { icon: "📊", title: "Your Progress", description: "Track your complete learning journey." },
   achievements: { icon: "🏆", title: "Achievements", description: "Celebrate your learning milestones." },
-  settings: { icon: "⚙️", title: "Settings", description: "Manage your Trago preferences." },
+  settings: { icon: "⚙️", title: "Settings", description: "Manage your Auvyant preferences." },
 };
 
 function AppButton({
@@ -218,7 +218,7 @@ export default function DashboardScreen() {
           if (Array.isArray(parsed) && parsed.length) setMyLanguages(parsed);
         }
       } catch (error) {
-        console.warn("Could not load Trago profile.", error);
+        console.warn("Could not load Auvyant profile.", error);
       }
     }
 
@@ -281,9 +281,9 @@ export default function DashboardScreen() {
       <View style={styles.sidebar}>
         <Pressable style={styles.brand} onPress={() => goTo("home")}>
           <View style={styles.logo}>
-            <Text style={styles.logoText}>T</Text>
+            <Text style={styles.logoText}>A</Text>
           </View>
-          <Text style={styles.brandName}>Trago</Text>
+          <Text style={styles.brandName}>Auvyant</Text>
         </Pressable>
 
         <ScrollView
@@ -637,17 +637,17 @@ export default function DashboardScreen() {
             <Text style={styles.practiceEmoji}>ⓘ</Text>
           </View>
           <View style={styles.flex}>
-            <Text style={styles.eyebrow}>ABOUT TRAGO</Text>
+            <Text style={styles.eyebrow}>ABOUT AUVYANT</Text>
             <Text style={styles.aboutHeroTitle}>Learn languages, your way.</Text>
             <Text style={styles.muted}>
-              Trago helps you build a language from the foundations to real conversation.
+              Auvyant helps you build a language from the foundations to real conversation.
             </Text>
           </View>
         </View>
 
         <View style={styles.aboutGrid}>
-          <AboutCard icon="🌸" title="What is Trago?">
-            Trago is a language-learning app designed to help learners understand a language, not just memorize words.
+          <AboutCard icon="🌸" title="What is Auvyant?">
+            Auvyant is a language-learning app designed to help learners understand a language, not just memorize words.
             {"\n\n"}Learn sounds, characters, pronunciation, reading, writing, vocabulary, grammar, listening and conversation.
           </AboutCard>
 
@@ -670,7 +670,7 @@ export default function DashboardScreen() {
               Understand first. Practice next. Speak naturally.
             </Text>
             <Text style={styles.muted}>
-              Trago is built around the idea that learning a language should feel like building a skill. 🌷
+              Auvyant is built around the idea that learning a language should feel like building a skill. 🌷
             </Text>
           </View>
         </View>
@@ -681,7 +681,7 @@ export default function DashboardScreen() {
   function renderProfile() {
     return (
       <View style={styles.card}>
-        <SectionTitle title="Your profile" description="Personalize your Trago experience." />
+        <SectionTitle title="Your profile" description="Personalize your Auvyant experience." />
         <Text style={styles.inputLabel}>Your name</Text>
         <TextInput
           value={userName}
@@ -729,7 +729,7 @@ export default function DashboardScreen() {
     if (page === "settings") {
       return (
         <View style={styles.card}>
-          <SectionTitle title="Settings" description="Manage your Trago preferences." />
+          <SectionTitle title="Settings" description="Manage your Auvyant preferences." />
           <Pressable style={styles.settingRow} onPress={() => goTo("profile")}>
             <Text style={styles.practiceEmoji}>👤</Text>
             <View style={styles.flex}>
@@ -797,9 +797,9 @@ export default function DashboardScreen() {
                 onPress={() => setShowSidebar(!showSidebar)}
               >
                 <View style={styles.logo}>
-                  <Text style={styles.logoText}>T</Text>
+                  <Text style={styles.logoText}>A</Text>
                 </View>
-                <Text style={styles.brandName}>Trago</Text>
+                <Text style={styles.brandName}>Auvyant</Text>
               </Pressable>
             ) : (
               <Text style={styles.topbarLabel}>Your learning space</Text>
@@ -939,7 +939,7 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   sidebar: {
-    width: 225,
+    width: 250,
     backgroundColor: WHITE,
     borderRightWidth: 1,
     borderRightColor: BORDER,
@@ -990,12 +990,12 @@ const styles = StyleSheet.create({
   navIcon: {
     width: 19,
     textAlign: "center",
-    color: "#746B72",
+    color: "#77869A",
     fontSize: 15,
   },
   navLabel: {
     flex: 1,
-    color: "#746B72",
+    color: "#77869A",
     fontSize: 12,
   },
   navLabelActive: {
@@ -1003,7 +1003,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   menuTitle: {
-    color: "#B0A5AC",
+    color: "#8998AC",
     fontSize: 9,
     fontWeight: "800",
     letterSpacing: 1.4,
@@ -1021,7 +1021,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: BORDER,
     borderRadius: 10,
-    backgroundColor: "#FFFAFD",
+    backgroundColor: "#F8F5FC",
   },
   flag: {
     fontSize: 23,
@@ -1071,7 +1071,7 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   topbar: {
-    minHeight: 62,
+    minHeight: 72,
     paddingHorizontal: 20,
     paddingVertical: 9,
     backgroundColor: WHITE,
@@ -1101,7 +1101,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   notificationIcon: {
-    color: "#7D727A",
+    color: "#77869A",
     fontSize: 23,
   },
   notificationDot: {
@@ -1142,8 +1142,8 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 24,
-    paddingTop: 27,
-    paddingBottom: 45,
+    paddingTop: 32,
+    paddingBottom: 56,
     gap: 20,
     maxWidth: 1250,
     width: "100%",
@@ -1165,7 +1165,7 @@ const styles = StyleSheet.create({
   },
   welcomeTitle: {
     color: TEXT,
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: "800",
     marginBottom: 7,
   },
@@ -1204,8 +1204,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: BORDER,
     borderRadius: 15,
-    padding: 19,
+    padding: 23,
     gap: 12,
+    shadowColor: "#5B4774",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.055,
+    shadowRadius: 14,
+    elevation: 2,
   },
   cardHeader: {
     flexDirection: "row",
@@ -1237,7 +1242,7 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingVertical: 9,
     borderBottomWidth: 1,
-    borderBottomColor: "#F5E8EE",
+    borderBottomColor: "#E8DDF3",
   },
   pathNumber: {
     width: 35,
@@ -1245,10 +1250,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F8F1F5",
+    backgroundColor: "#F5F0FA",
   },
   pathNumberText: {
-    color: "#A3949C",
+    color: "#8998AC",
     fontSize: 11,
     fontWeight: "800",
   },
@@ -1293,7 +1298,7 @@ const styles = StyleSheet.create({
     width: 130,
     height: 5,
     borderRadius: 5,
-    backgroundColor: "#F5E6ED",
+    backgroundColor: "#E8DDF3",
     overflow: "hidden",
     marginTop: 7,
   },
@@ -1308,7 +1313,7 @@ const styles = StyleSheet.create({
   },
   sectionHeading: {
     color: TEXT,
-    fontSize: 21,
+    fontSize: 23,
     fontWeight: "800",
   },
   practiceGrid: {
@@ -1325,8 +1330,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: BORDER,
     borderRadius: 14,
-    padding: 15,
-    gap: 7,
+    padding: 17,
+    gap: 8,
+    shadowColor: "#5B4774",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 1,
   },
   pressed: {
     opacity: 0.75,
@@ -1415,7 +1425,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   streakEmoji: {
-    fontSize: 28,
+    fontSize: 32,
   },
   streakNumber: {
     color: TEXT,
@@ -1453,10 +1463,10 @@ const styles = StyleSheet.create({
     borderRadius: 11,
     borderWidth: 1,
     borderColor: BORDER,
-    backgroundColor: "#FFFAFD",
+    backgroundColor: "#F8F5FC",
   },
   myLanguageActive: {
-    borderColor: "#EF9BC0",
+    borderColor: "#D85F9A",
     backgroundColor: PINK_SOFT,
   },
   flagLarge: {

@@ -10,6 +10,19 @@ import {
 } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 
+const COLORS = {
+  background: "#ece0f8",
+  white: "#FFFFFF",
+  pink: "#D85F9A",
+  softPink: "#f8cfe3",
+  skyBlue: "#b7dff7",
+  lavender: "#d3c8f2",
+  dark: "#29384F",
+  muted: "#77869A",
+  border: "#B9E2FA",
+  light: "#F8F5FC",
+};
+
 const levels = [
   {
     id: "beginner",
@@ -53,7 +66,7 @@ export default function LevelScreen() {
 
   const continueNext = () => {
     router.push({
-      pathname: "/dashboard",
+      pathname: "/Dashboard",
       params: {
         language: language || "English",
         goals: goals || JSON.stringify([]),
@@ -68,10 +81,12 @@ export default function LevelScreen() {
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}
       >
+        {/* Top Navigation */}
         <View style={styles.topRow}>
           <TouchableOpacity
             style={styles.back}
             onPress={() => router.back()}
+            activeOpacity={0.7}
           >
             <Text style={styles.backText}>‹</Text>
           </TouchableOpacity>
@@ -80,18 +95,23 @@ export default function LevelScreen() {
           <View style={styles.placeholder} />
         </View>
 
+        {/* Progress Bar */}
         <View style={styles.progressTrack}>
           <View style={styles.progressFill} />
         </View>
 
+        {/* Heading */}
         <Text style={styles.eyebrow}>YOUR LEARNING JOURNEY</Text>
+
         <Text style={styles.title}>
           What's your{"\n"}current level?
         </Text>
+
         <Text style={styles.subtitle}>
           No pressure! Choose the level that feels right for you.
         </Text>
 
+        {/* Level Options */}
         <View style={styles.levelList}>
           {levels.map((level) => {
             const active = selected === level.id;
@@ -119,6 +139,7 @@ export default function LevelScreen() {
                   <Text style={styles.levelTitle}>
                     {level.title}
                   </Text>
+
                   <Text style={styles.description}>
                     {level.description}
                   </Text>
@@ -137,6 +158,7 @@ export default function LevelScreen() {
           })}
         </View>
 
+        {/* Helpful Tip */}
         <View style={styles.tip}>
           <Text style={styles.tipEmoji}>💡</Text>
           <Text style={styles.tipText}>
@@ -144,6 +166,7 @@ export default function LevelScreen() {
           </Text>
         </View>
 
+        {/* Continue Button */}
         <TouchableOpacity
           style={styles.continueButton}
           activeOpacity={0.85}
@@ -152,9 +175,11 @@ export default function LevelScreen() {
           <Text style={styles.continueText}>
             Let's start learning
           </Text>
+
           <Text style={styles.arrow}>→</Text>
         </TouchableOpacity>
 
+        {/* Footer */}
         <Text style={styles.footer}>
           YOUR JOURNEY, YOUR PACE ✨
         </Text>
@@ -166,101 +191,116 @@ export default function LevelScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: "#FFF7FA",
+    backgroundColor: COLORS.background,
   },
+
   scroll: {
     flexGrow: 1,
     paddingHorizontal: 23,
     paddingTop: 12,
     paddingBottom: 28,
   },
+
   topRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
+
   back: {
     width: 43,
     height: 43,
     borderRadius: 15,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: "#F1E4EA",
+    borderColor: COLORS.softPink,
     alignItems: "center",
     justifyContent: "center",
   },
+
   backText: {
     fontSize: 32,
-    color: "#29212A",
+    color: COLORS.dark,
     lineHeight: 35,
   },
+
   step: {
     fontSize: 11,
     fontWeight: "800",
     letterSpacing: 2,
-    color: "#B66A8A",
+    color: COLORS.pink,
   },
+
   placeholder: {
     width: 43,
   },
+
   progressTrack: {
     height: 6,
     borderRadius: 10,
-    backgroundColor: "#F0DFE7",
+    backgroundColor: COLORS.softPink,
     marginTop: 20,
     marginBottom: 35,
     overflow: "hidden",
   },
+
   progressFill: {
     width: "100%",
     height: "100%",
-    backgroundColor: "#EA79A7",
+    backgroundColor: COLORS.pink,
     borderRadius: 10,
   },
+
   eyebrow: {
     fontSize: 11,
     fontWeight: "900",
     letterSpacing: 2,
-    color: "#6bb4d3",
+    color: "#1a76a1",
     marginBottom: 10,
   },
+
   title: {
     fontSize: 36,
     lineHeight: 42,
     fontWeight: "800",
-    color: "#28202A",
+    color: COLORS.dark,
     letterSpacing: -1,
   },
+
   subtitle: {
     fontSize: 15,
     lineHeight: 23,
-    color: "#8B818A",
+    color: COLORS.muted,
     marginTop: 12,
     marginBottom: 27,
   },
+
   levelList: {
     gap: 14,
   },
+
   card: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.white,
     borderRadius: 23,
     borderWidth: 1.5,
-    borderColor: "#F0E6EB",
+    borderColor: "#E8DDF3",
     padding: 15,
     minHeight: 104,
   },
+
   activeCard: {
-    borderColor: "#13c5ed",
-    borderWidth:4,
+    borderColor: COLORS.pink,
+    borderWidth: 2,
     backgroundColor: "#FFF9FC",
-    shadowColor: "#D96D99",
+    shadowColor: COLORS.pink,
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 3,
   },
+
   emojiBox: {
     width: 60,
     height: 60,
@@ -268,91 +308,105 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   emoji: {
     fontSize: 31,
   },
+
   cardText: {
     flex: 1,
     marginLeft: 14,
   },
+
   levelTitle: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#302632",
+    color: COLORS.dark,
   },
+
   description: {
     fontSize: 12,
     lineHeight: 18,
-    color: "#8B818A",
+    color: COLORS.muted,
     marginTop: 5,
   },
+
   radio: {
     width: 23,
     height: 23,
     borderRadius: 12,
     borderWidth: 1.8,
-    borderColor: "#D9CFD5",
+    borderColor: COLORS.border,
     alignItems: "center",
     justifyContent: "center",
     marginLeft: 8,
   },
+
   activeRadio: {
-    borderColor: "#E96F9F",
+    borderColor: COLORS.pink,
   },
+
   radioDot: {
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: "#a46fe9",
+    backgroundColor: COLORS.pink,
   },
+
   tip: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF0D9",
+    backgroundColor: "#F8EAF2",
     padding: 14,
     borderRadius: 16,
     marginTop: 22,
   },
+
   tipEmoji: {
     fontSize: 22,
     marginRight: 10,
   },
+
   tipText: {
     flex: 1,
     fontSize: 12,
     lineHeight: 18,
-    color: "#795B36",
+    color: COLORS.dark,
   },
+
   continueButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f8478e",
+    backgroundColor: COLORS.pink,
     borderRadius: 18,
     paddingVertical: 18,
     marginTop: 24,
-    shadowColor: "#D96D99",
+    shadowColor: COLORS.pink,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.22,
     shadowRadius: 10,
     elevation: 4,
   },
+
   continueText: {
-    color: "#FFFFFF",
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: "800",
   },
+
   arrow: {
-    color: "#FFFFFF",
+    color: COLORS.white,
     fontSize: 22,
     marginLeft: 10,
   },
+
   footer: {
     textAlign: "center",
     marginTop: 20,
     fontSize: 10,
     letterSpacing: 2,
     fontWeight: "700",
-    color: "#161516",
+    color: COLORS.muted,
   },
 });
