@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter, useLocalSearchParams } from "expo-router";
 
 const levels = [
@@ -51,134 +52,175 @@ export default function LevelScreen() {
 
   const [selected, setSelected] = useState("beginner");
 
+  // Navigate to the dashboard according to selected language
   const continueNext = () => {
-    router.push({
-      pathname: "/dashboard",
-      params: {
-        language: language || "English",
-        goals: goals || JSON.stringify([]),
-        level: selected,
-      },
-    });
+    const selectedLanguage = (language || "English")
+      .toLowerCase()
+      .trim();
+  
+    const selectedGoals = goals || JSON.stringify([]);
+  
+    if (selectedLanguage === "japanese") {
+      router.push(
+        `/Dashboard/Japanese/japanese?language=${encodeURIComponent(
+          language || "English"
+        )}&goals=${encodeURIComponent(
+          selectedGoals
+        )}&level=${selected}`
+      );
+    } else {
+      router.push(
+        `/Dashboard?language=${encodeURIComponent(
+          language || "English"
+        )}&goals=${encodeURIComponent(
+          selectedGoals
+        )}&level=${selected}`
+      );
+    }
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <ScrollView
-        contentContainerStyle={styles.scroll}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.topRow}>
+    <View style={styles.screenFrame}>
+      <SafeAreaView style={styles.safe}>
+        <ScrollView
+          contentContainerStyle={styles.scroll}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.topRow}>
+            <TouchableOpacity
+              style={styles.back}
+              onPress={() => router.back()}
+              activeOpacity={0.7}
+            >
+              <Ionicons
+                name="arrow-back"
+                size={22}
+                color="#29212A"
+              />
+            </TouchableOpacity>
+
+            <Text style={styles.step}>STEP 3 OF 3</Text>
+            <View style={styles.placeholder} />
+          </View>
+
+          <View style={styles.progressTrack}>
+            <View style={styles.progressFill} />
+          </View>
+
+          <Text style={styles.eyebrow}>YOUR LEARNING JOURNEY</Text>
+
+          <Text style={styles.title}>
+            What's your{"\n"}current level?
+          </Text>
+
+          <Text style={styles.subtitle}>
+            No pressure! Choose the level that feels right for you.
+          </Text>
+
+          <View style={styles.levelList}>
+            {levels.map((level) => {
+              const active = selected === level.id;
+
+              return (
+                <TouchableOpacity
+                  key={level.id}
+                  activeOpacity={0.85}
+                  onPress={() => setSelected(level.id)}
+                  style={[
+                    styles.card,
+                    active && styles.activeCard,
+                  ]}
+                >
+                  <View
+                    style={[
+                      styles.emojiBox,
+                      { backgroundColor: level.color },
+                    ]}
+                  >
+                    <Text style={styles.emoji}>
+                      {level.emoji}
+                    </Text>
+                  </View>
+
+                  <View style={styles.cardText}>
+                    <Text style={styles.levelTitle}>
+                      {level.title}
+                    </Text>
+
+                    <Text style={styles.description}>
+                      {level.description}
+                    </Text>
+                  </View>
+
+                  <View
+                    style={[
+                      styles.radio,
+                      active && styles.activeRadio,
+                    ]}
+                  >
+                    {active && <View style={styles.radioDot} />}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
+          <View style={styles.tip}>
+            <Text style={styles.tipEmoji}>💡</Text>
+
+            <Text style={styles.tipText}>
+              You can change your level anytime as you improve.
+            </Text>
+          </View>
+
           <TouchableOpacity
-            style={styles.back}
-            onPress={() => router.back()}
+            style={styles.continueButton}
+            activeOpacity={0.85}
+            onPress={continueNext}
           >
-            <Text style={styles.backText}>‹</Text>
+            <Text style={styles.continueText}>
+              Let's start learning
+            </Text>
+
+            <Text style={styles.arrow}>→</Text>
           </TouchableOpacity>
 
-          <Text style={styles.step}>STEP 3 OF 3</Text>
-          <View style={styles.placeholder} />
-        </View>
-
-        <View style={styles.progressTrack}>
-          <View style={styles.progressFill} />
-        </View>
-
-        <Text style={styles.eyebrow}>YOUR LEARNING JOURNEY</Text>
-        <Text style={styles.title}>
-          What's your{"\n"}current level?
-        </Text>
-        <Text style={styles.subtitle}>
-          No pressure! Choose the level that feels right for you.
-        </Text>
-
-        <View style={styles.levelList}>
-          {levels.map((level) => {
-            const active = selected === level.id;
-
-            return (
-              <TouchableOpacity
-                key={level.id}
-                activeOpacity={0.85}
-                onPress={() => setSelected(level.id)}
-                style={[
-                  styles.card,
-                  active && styles.activeCard,
-                ]}
-              >
-                <View
-                  style={[
-                    styles.emojiBox,
-                    { backgroundColor: level.color },
-                  ]}
-                >
-                  <Text style={styles.emoji}>{level.emoji}</Text>
-                </View>
-
-                <View style={styles.cardText}>
-                  <Text style={styles.levelTitle}>
-                    {level.title}
-                  </Text>
-                  <Text style={styles.description}>
-                    {level.description}
-                  </Text>
-                </View>
-
-                <View
-                  style={[
-                    styles.radio,
-                    active && styles.activeRadio,
-                  ]}
-                >
-                  {active && <View style={styles.radioDot} />}
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-
-        <View style={styles.tip}>
-          <Text style={styles.tipEmoji}>💡</Text>
-          <Text style={styles.tipText}>
-            You can change your level anytime as you improve.
+          <Text style={styles.footer}>
+            YOUR JOURNEY, YOUR PACE ✨
           </Text>
-        </View>
-
-        <TouchableOpacity
-          style={styles.continueButton}
-          activeOpacity={0.85}
-          onPress={continueNext}
-        >
-          <Text style={styles.continueText}>
-            Let's start learning
-          </Text>
-          <Text style={styles.arrow}>→</Text>
-        </TouchableOpacity>
-
-        <Text style={styles.footer}>
-          YOUR JOURNEY, YOUR PACE ✨
-        </Text>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  screenFrame: {
+    flex: 1,
+    backgroundColor: "#F8478E",
+    padding: 10,
+  },
+
   safe: {
     flex: 1,
     backgroundColor: "#FFF7FA",
+    borderRadius: 30,
+    overflow: "hidden",
   },
+
   scroll: {
     flexGrow: 1,
     paddingHorizontal: 23,
     paddingTop: 12,
     paddingBottom: 28,
   },
+
   topRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
+
   back: {
     width: 43,
     height: 43,
@@ -189,20 +231,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  backText: {
-    fontSize: 32,
-    color: "#29212A",
-    lineHeight: 35,
-  },
+
   step: {
     fontSize: 11,
     fontWeight: "800",
     letterSpacing: 2,
     color: "#B66A8A",
   },
+
   placeholder: {
     width: 43,
   },
+
   progressTrack: {
     height: 6,
     borderRadius: 10,
@@ -211,12 +251,14 @@ const styles = StyleSheet.create({
     marginBottom: 35,
     overflow: "hidden",
   },
+
   progressFill: {
     width: "100%",
     height: "100%",
     backgroundColor: "#EA79A7",
     borderRadius: 10,
   },
+
   eyebrow: {
     fontSize: 11,
     fontWeight: "900",
@@ -224,6 +266,7 @@ const styles = StyleSheet.create({
     color: "#6bb4d3",
     marginBottom: 10,
   },
+
   title: {
     fontSize: 36,
     lineHeight: 42,
@@ -231,6 +274,7 @@ const styles = StyleSheet.create({
     color: "#28202A",
     letterSpacing: -1,
   },
+
   subtitle: {
     fontSize: 15,
     lineHeight: 23,
@@ -238,9 +282,11 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginBottom: 27,
   },
+
   levelList: {
     gap: 14,
   },
+
   card: {
     flexDirection: "row",
     alignItems: "center",
@@ -251,9 +297,10 @@ const styles = StyleSheet.create({
     padding: 15,
     minHeight: 104,
   },
+
   activeCard: {
     borderColor: "#13c5ed",
-    borderWidth:4,
+    borderWidth: 4,
     backgroundColor: "#FFF9FC",
     shadowColor: "#D96D99",
     shadowOffset: { width: 0, height: 5 },
@@ -261,6 +308,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 3,
   },
+
   emojiBox: {
     width: 60,
     height: 60,
@@ -268,24 +316,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   emoji: {
     fontSize: 31,
   },
+
   cardText: {
     flex: 1,
     marginLeft: 14,
   },
+
   levelTitle: {
     fontSize: 17,
     fontWeight: "800",
     color: "#302632",
   },
+
   description: {
     fontSize: 12,
     lineHeight: 18,
     color: "#8B818A",
     marginTop: 5,
   },
+
   radio: {
     width: 23,
     height: 23,
@@ -296,15 +349,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginLeft: 8,
   },
+
   activeRadio: {
     borderColor: "#E96F9F",
   },
+
   radioDot: {
     width: 12,
     height: 12,
     borderRadius: 6,
     backgroundColor: "#a46fe9",
   },
+
   tip: {
     flexDirection: "row",
     alignItems: "center",
@@ -313,16 +369,19 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginTop: 22,
   },
+
   tipEmoji: {
     fontSize: 22,
     marginRight: 10,
   },
+
   tipText: {
     flex: 1,
     fontSize: 12,
     lineHeight: 18,
     color: "#795B36",
   },
+
   continueButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -337,16 +396,19 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 4,
   },
+
   continueText: {
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "800",
   },
+
   arrow: {
     color: "#FFFFFF",
     fontSize: 22,
     marginLeft: 10,
   },
+
   footer: {
     textAlign: "center",
     marginTop: 20,
