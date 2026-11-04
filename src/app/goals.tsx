@@ -11,6 +11,18 @@ import {
 import { router, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
+const COLORS = {
+  background: "#ece0f8",
+  white: "#FFFFFF",
+  pink: "#D85F9A",
+  softPink: "#f8cfe3",
+  skyBlue: "#b7dff7",
+  lavender: "#d3c8f2",
+  dark: "#29384F",
+  muted: "#77869A",
+  border: "#B9E2FA",
+};
+
 const goals = [
   { label: "💼 Grow your career", value: "career" },
   { label: "🎓 Thrive at university", value: "university" },
@@ -42,7 +54,7 @@ export default function LearningGoalsScreen() {
     if (selected.length === 0) return;
 
     router.push({
-      pathname: "/level" as any,
+      pathname: "/level",
       params: {
         language: language || "English",
         goals: JSON.stringify(selected),
@@ -68,7 +80,7 @@ export default function LearningGoalsScreen() {
             <Ionicons
               name="arrow-back"
               size={23}
-              color="#080808"
+              color={COLORS.dark}
             />
           </TouchableOpacity>
 
@@ -102,7 +114,7 @@ export default function LearningGoalsScreen() {
                     <Ionicons
                       name="checkmark-circle"
                       size={21}
-                      color="#080808"
+                      color={COLORS.pink}
                       style={styles.checkIcon}
                     />
                   )}
@@ -134,7 +146,7 @@ export default function LearningGoalsScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: "#F66B55",
+    backgroundColor: COLORS.background,
   },
 
   container: {
@@ -142,7 +154,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginTop: 8,
     marginBottom: 8,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.white,
     borderRadius: 42,
     overflow: "hidden",
   },
@@ -151,7 +163,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: "center",
     paddingHorizontal: 24,
-    paddingTop: 76,
+    paddingTop: 30,
     paddingBottom: 30,
   },
 
@@ -162,7 +174,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 15,
-    backgroundColor: "#F5F0EB",
+    backgroundColor: COLORS.softPink,
     alignItems: "center",
     justifyContent: "center",
     zIndex: 10,
@@ -170,47 +182,47 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 38,
-    lineHeight: 45,
+    fontSize: 34,
+    lineHeight: 43,
     fontWeight: "800",
     fontFamily: "Georgia",
-    color: "#080808",
+    color: COLORS.dark,
     textAlign: "center",
     marginTop: 20,
-    marginBottom: 58,
+    marginBottom: 48,
   },
 
   options: {
-    width: "250%",
+    width: "100%",
     alignItems: "center",
-    gap: 16,
+    gap: 12,
   },
 
   option: {
-    width: "40%",
+    width: "100%",
     minHeight: 64,
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     paddingVertical: 14,
-    backgroundColor: "#E8DED5",
+    backgroundColor: "#F5F0FA",
     borderRadius: 17,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
     position: "relative",
     borderWidth: 1.5,
-    borderColor: "transparent",
+    borderColor: "#E8DDF3",
   },
 
   selected: {
-    backgroundColor: "#d3c7fb",
-    borderColor: "#ac8ef3",
-    borderWidth: 4,
+    backgroundColor: COLORS.softPink,
+    borderColor: COLORS.pink,
+    borderWidth: 2,
   },
 
   optionText: {
-    color: "#080808",
-    fontSize: 17,
-    fontWeight: "500",
+    color: COLORS.dark,
+    fontSize: 16,
+    fontWeight: "600",
     textAlign: "center",
     flexShrink: 1,
   },
@@ -221,16 +233,21 @@ const styles = StyleSheet.create({
   },
 
   continueButton: {
-    width: "80%",
-    backgroundColor: "#F66B55",
+    width: "100%",
+    backgroundColor: COLORS.pink,
     padding: 17,
     borderRadius: 16,
     alignItems: "center",
     marginTop: 30,
+    elevation: 3,
+    shadowColor: COLORS.pink,
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
   },
 
   continueText: {
-    color: "#FFFFFF",
+    color: COLORS.white,
     fontSize: 18,
     fontWeight: "700",
   },
