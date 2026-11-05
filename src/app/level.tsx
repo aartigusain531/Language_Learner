@@ -59,37 +59,30 @@ export default function LevelScreen() {
   const router = useRouter();
 
   const { language, goals } = useLocalSearchParams<{
-    language?: string;
-    goals?: string;
+    language?: string | string[];
+    goals?: string | string[];
   }>();
+
+  const selectedLanguage = Array.isArray(language)
+    ? language[0]
+    : language || "English";
+
+  const selectedGoals = Array.isArray(goals)
+    ? goals[0]
+    : goals || "[]";
 
   const [selected, setSelected] = useState("beginner");
 
-  // Navigate to the dashboard according to selected language
+  // Connect Level directly to the common Dashboard
   const continueNext = () => {
-    const selectedLanguage = (language || "English")
-      .toLowerCase()
-      .trim();
-  
-    const selectedGoals = goals || JSON.stringify([]);
-  
-    if (selectedLanguage === "japanese") {
-      router.push(
-        `/Dashboard/Japanese/japanese?language=${encodeURIComponent(
-          language || "English"
-        )}&goals=${encodeURIComponent(
-          selectedGoals
-        )}&level=${selected}`
-      );
-    } else {
-      router.push(
-        `/Dashboard?language=${encodeURIComponent(
-          language || "English"
-        )}&goals=${encodeURIComponent(
-          selectedGoals
-        )}&level=${selected}`
-      );
-    }
+    router.push({
+      pathname: "/Dashboard",
+      params: {
+        language: selectedLanguage,
+        goals: selectedGoals,
+        level: selected,
+      },
+    });
   };
 
   return (
@@ -99,6 +92,7 @@ export default function LevelScreen() {
           contentContainerStyle={styles.scroll}
           showsVerticalScrollIndicator={false}
         >
+          {/* Top Navigation */}
           <View style={styles.topRow}>
             <TouchableOpacity
               style={styles.back}
@@ -108,19 +102,24 @@ export default function LevelScreen() {
               <Ionicons
                 name="arrow-back"
                 size={22}
-                color="#29212A"
+                color={COLORS.dark}
               />
             </TouchableOpacity>
 
             <Text style={styles.step}>STEP 3 OF 3</Text>
+
             <View style={styles.placeholder} />
           </View>
 
+          {/* Progress Bar */}
           <View style={styles.progressTrack}>
             <View style={styles.progressFill} />
           </View>
 
-          <Text style={styles.eyebrow}>YOUR LEARNING JOURNEY</Text>
+          {/* Heading */}
+          <Text style={styles.eyebrow}>
+            YOUR LEARNING JOURNEY
+          </Text>
 
           <Text style={styles.title}>
             What's your{"\n"}current level?
@@ -130,6 +129,7 @@ export default function LevelScreen() {
             No pressure! Choose the level that feels right for you.
           </Text>
 
+          {/* Level Options */}
           <View style={styles.levelList}>
             {levels.map((level) => {
               const active = selected === level.id;
@@ -171,13 +171,16 @@ export default function LevelScreen() {
                       active && styles.activeRadio,
                     ]}
                   >
-                    {active && <View style={styles.radioDot} />}
+                    {active && (
+                      <View style={styles.radioDot} />
+                    )}
                   </View>
                 </TouchableOpacity>
               );
             })}
           </View>
 
+          {/* Helpful Tip */}
           <View style={styles.tip}>
             <Text style={styles.tipEmoji}>💡</Text>
 
@@ -186,34 +189,11 @@ export default function LevelScreen() {
             </Text>
           </View>
 
+          {/* Continue Button */}
           <TouchableOpacity
             style={styles.continueButton}
             activeOpacity={0.85}
             onPress={continueNext}
-=======
-    router.push({
-      pathname: "/Dashboard",
-      params: {
-        language: language || "English",
-        goals: goals || JSON.stringify([]),
-        level: selected,
-      },
-    });
-  };
-
-  return (
-    <SafeAreaView style={styles.safe}>
-      <ScrollView
-        contentContainerStyle={styles.scroll}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Top Navigation */}
-        <View style={styles.topRow}>
-          <TouchableOpacity
-            style={styles.back}
-            onPress={() => router.back()}
-            activeOpacity={0.7}
->>>>>>> 796f7478865c349652aeea2d22b7bceb056a8fb5
           >
             <Text style={styles.continueText}>
               Let's start learning
@@ -222,126 +202,28 @@ export default function LevelScreen() {
             <Text style={styles.arrow}>→</Text>
           </TouchableOpacity>
 
-<<<<<<< HEAD
+          {/* Footer */}
           <Text style={styles.footer}>
             YOUR JOURNEY, YOUR PACE ✨
           </Text>
         </ScrollView>
       </SafeAreaView>
     </View>
-=======
-          <Text style={styles.step}>STEP 3 OF 3</Text>
-          <View style={styles.placeholder} />
-        </View>
-
-        {/* Progress Bar */}
-        <View style={styles.progressTrack}>
-          <View style={styles.progressFill} />
-        </View>
-
-        {/* Heading */}
-        <Text style={styles.eyebrow}>YOUR LEARNING JOURNEY</Text>
-
-        <Text style={styles.title}>
-          What's your{"\n"}current level?
-        </Text>
-
-        <Text style={styles.subtitle}>
-          No pressure! Choose the level that feels right for you.
-        </Text>
-
-        {/* Level Options */}
-        <View style={styles.levelList}>
-          {levels.map((level) => {
-            const active = selected === level.id;
-
-            return (
-              <TouchableOpacity
-                key={level.id}
-                activeOpacity={0.85}
-                onPress={() => setSelected(level.id)}
-                style={[
-                  styles.card,
-                  active && styles.activeCard,
-                ]}
-              >
-                <View
-                  style={[
-                    styles.emojiBox,
-                    { backgroundColor: level.color },
-                  ]}
-                >
-                  <Text style={styles.emoji}>{level.emoji}</Text>
-                </View>
-
-                <View style={styles.cardText}>
-                  <Text style={styles.levelTitle}>
-                    {level.title}
-                  </Text>
-
-                  <Text style={styles.description}>
-                    {level.description}
-                  </Text>
-                </View>
-
-                <View
-                  style={[
-                    styles.radio,
-                    active && styles.activeRadio,
-                  ]}
-                >
-                  {active && <View style={styles.radioDot} />}
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-
-        {/* Helpful Tip */}
-        <View style={styles.tip}>
-          <Text style={styles.tipEmoji}>💡</Text>
-          <Text style={styles.tipText}>
-            You can change your level anytime as you improve.
-          </Text>
-        </View>
-
-        {/* Continue Button */}
-        <TouchableOpacity
-          style={styles.continueButton}
-          activeOpacity={0.85}
-          onPress={continueNext}
-        >
-          <Text style={styles.continueText}>
-            Let's start learning
-          </Text>
-
-          <Text style={styles.arrow}>→</Text>
-        </TouchableOpacity>
-
-        {/* Footer */}
-        <Text style={styles.footer}>
-          YOUR JOURNEY, YOUR PACE ✨
-        </Text>
-      </ScrollView>
-    </SafeAreaView>
->>>>>>> 796f7478865c349652aeea2d22b7bceb056a8fb5
   );
 }
 
 const styles = StyleSheet.create({
   screenFrame: {
     flex: 1,
-    backgroundColor: "#F8478E",
+    backgroundColor: COLORS.background,
     padding: 10,
   },
 
   safe: {
     flex: 1,
-
     backgroundColor: "#FFF7FA",
     borderRadius: 30,
     overflow: "hidden",
-
   },
 
   scroll: {
@@ -368,15 +250,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-<<<<<<< HEAD
-=======
-  backText: {
-    fontSize: 32,
-    color: COLORS.dark,
-    lineHeight: 35,
-  },
-
->>>>>>> 796f7478865c349652aeea2d22b7bceb056a8fb5
   step: {
     fontSize: 11,
     fontWeight: "800",
@@ -444,13 +317,8 @@ const styles = StyleSheet.create({
   },
 
   activeCard: {
-<<<<<<< HEAD
-    borderColor: "#13c5ed",
-    borderWidth: 4,
-=======
     borderColor: COLORS.pink,
     borderWidth: 2,
->>>>>>> 796f7478865c349652aeea2d22b7bceb056a8fb5
     backgroundColor: "#FFF9FC",
     shadowColor: COLORS.pink,
     shadowOffset: { width: 0, height: 5 },
