@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
     marginTop: 9,
     fontSize: 14,
     lineHeight: 21,
-    color: "#77869A",
+    color: "#131414",
   },
 
   /* Login card */
@@ -452,14 +452,15 @@ const styles = StyleSheet.create({
 
   loginButtonText: {
     color: "#FFFFFF",
-    fontSize: 15,
+    fontSize: 19,
     fontWeight: "800",
   },
 
   buttonArrow: {
     position: "absolute",
-    right: 18,
-    fontSize: 21,
+    bottom:14,
+    right: 90,
+    fontSize: 30,
     fontWeight: "600",
     color: "#FFFFFF",
   },
