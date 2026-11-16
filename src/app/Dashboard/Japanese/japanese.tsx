@@ -1,26 +1,20 @@
+type LanguageContent = {
+  greeting: string;
+  meaning: string;
+  words: {
+    word: string;
+    translation: string;
+  }[];
+};
 
-const japanese = {
-  name: "Japanese",
-  welcome: "日本語を学びましょう！",
-  subtitle: "Let's learn Japanese!",
-
-  lessons: [
-    {
-      id: 1,
-      title: "Japanese Alphabet",
-      description: "Learn the basics of Hiragana.",
-    },
-    {
-      id: 2,
-      title: "Basic Greetings",
-      description: "Learn everyday Japanese greetings.",
-    },
-    {
-      id: 3,
-      title: "First Conversations",
-      description: "Start speaking simple Japanese.",
-    },
+const Japanese: LanguageContent = {
+  greeting: "こんにちは",
+  meaning: "Hello / Good afternoon",
+  words: [
+    { word: "ありがとう", translation: "Thank you" },
+    { word: "はい", translation: "Yes" },
+    { word: "いいえ", translation: "No" },
   ],
 };
 
-export default japanese;
+export default Japanese;

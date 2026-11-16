@@ -10,10 +10,18 @@ import {
   Platform,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const API_BASE_URL =
+  Platform.OS === "android"
+    ? "http://10.0.2.2:8000"
+    : "http://127.0.0.1:8000";
 
 export default function Signup() {
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +30,7 @@ export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (!name.trim() || !email.trim() || !password || !confirmPassword) {
       Alert.alert("Missing details", "Please fill in every field.");
       return;
@@ -45,10 +53,58 @@ export default function Signup() {
       return;
     }
 
-    Alert.alert(
-      "Almost there!",
-      "Your form is valid. Connect your authentication service to create your account."
-    );
+    try {
+      setLoading(true);
+
+      const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          typeof data.detail === "string"
+            ? data.detail
+            : "Unable to create your account."
+        );
+      }
+
+      // Check whether the backend returned an access token.
+      if (!data.access_token) {
+        throw new Error(
+          "Authentication token was not returned by the server."
+        );
+      }
+
+      // Save the token so the user is authenticated immediately.
+      await AsyncStorage.setItem("auth_token", data.access_token);
+
+      // Save the user's information for use in the app.
+      if (data.user) {
+        await AsyncStorage.setItem("user", JSON.stringify(data.user));
+      }
+
+      // Signup is complete: continue directly to language selection.
+      router.replace("/language");
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Could not connect to the server.";
+
+      Alert.alert("Signup failed", message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderPasswordField = (
@@ -95,7 +151,6 @@ export default function Signup() {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.page}>
-
             {/* Decorative circles */}
             <View style={styles.pinkCircle} />
             <View style={styles.blueCircle} />
@@ -197,12 +252,19 @@ export default function Signup() {
                 style={styles.signupButton}
                 onPress={handleSignup}
                 activeOpacity={0.85}
+                disabled={loading}
               >
-                <Text style={styles.signupButtonText}>
-                  Create Account
-                </Text>
+                {loading ? (
+                  <ActivityIndicator color="#FFFFFF" />
+                ) : (
+                  <>
+                    <Text style={styles.signupButtonText}>
+                      Create Account
+                    </Text>
 
-                <Text style={styles.buttonArrow}>→</Text>
+                    <Text style={styles.buttonArrow}>→</Text>
+                  </>
+                )}
               </TouchableOpacity>
 
               {/* Login */}
@@ -221,17 +283,26 @@ export default function Signup() {
 
             {/* Color accents */}
             <View style={styles.colorDots}>
-              <View style={[styles.dot, { backgroundColor: "#F29ABF" }]} />
-              <View style={[styles.dot, { backgroundColor: "#86CFF2" }]} />
-              <View style={[styles.dot, { backgroundColor: "#B6A5F6" }]} />
-              <View style={[styles.dot, { backgroundColor: "#fa934f" }]} />
-              <View style={[styles.dot, { backgroundColor: "#79d4b6" }]} />
+              <View
+                style={[styles.dot, { backgroundColor: "#F29ABF" }]}
+              />
+              <View
+                style={[styles.dot, { backgroundColor: "#86CFF2" }]}
+              />
+              <View
+                style={[styles.dot, { backgroundColor: "#B6A5F6" }]}
+              />
+              <View
+                style={[styles.dot, { backgroundColor: "#fa934f" }]}
+              />
+              <View
+                style={[styles.dot, { backgroundColor: "#79d4b6" }]}
+              />
             </View>
 
             <Text style={styles.footer}>
               One language closer to a new world.
             </Text>
-
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

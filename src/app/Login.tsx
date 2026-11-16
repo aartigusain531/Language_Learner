@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   View,
@@ -10,30 +11,112 @@ import {
   Platform,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// Replace with your computer's local IP address
+
+const API_BASE_URL =
+  Platform.OS === "android"
+    ? "http://10.0.2.2:8000"
+    : "http://127.0.0.1:8000";
+
+    
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
- const handleLogin = () => {
-  if (!email.trim() || !password) {
-    Alert.alert("Missing details", "Please enter your email and password.");
-    return;
-  }
+  const handleLogin = async () => {
+    if (!email.trim() || !password) {
+      Alert.alert(
+        "Missing details",
+        "Please enter your email and password."
+      );
+      return;
+    }
 
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if (!emailPattern.test(email.trim())) {
-    Alert.alert("Invalid email", "Please enter a valid email address.");
-    return;
-  }
+    if (!emailPattern.test(email.trim())) {
+      Alert.alert(
+        "Invalid email",
+        "Please enter a valid email address."
+      );
+      return;
+    }
 
-  // Open language selection page
-  router.replace("/language");
-};
+    try {
+      setIsLoading(true);
+
+      const response = await fetch(
+        `${API_BASE_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.trim().toLowerCase(),
+            password: password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      // Reject incorrect credentials
+      if (!response.ok) {
+        Alert.alert(
+          "Login failed",
+          data.detail ||
+            data.message ||
+            "Incorrect email or password."
+        );
+        return;
+      }
+
+      // Check authentication response
+      if (!data.access_token) {
+        Alert.alert(
+          "Login error",
+          "The server did not return an authentication token."
+        );
+        return;
+      }
+
+      // Save authentication token
+      await AsyncStorage.setItem(
+        "auth_token",
+        data.access_token
+      );
+
+      // Save user information if provided
+      if (data.user) {
+        await AsyncStorage.setItem(
+          "user",
+          JSON.stringify(data.user)
+        );
+      }
+
+      Alert.alert("Success", "Login successful!");
+
+      router.replace("/language");
+
+    } catch (error) {
+      console.log("Login error:", error);
+
+      Alert.alert(
+        "Connection error",
+        "Unable to connect to the server. Please check your internet connection and backend server."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -47,6 +130,7 @@ export default function Login() {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.page}>
+
             {/* Decorative circles */}
             <View style={styles.pinkCircle} />
             <View style={styles.blueCircle} />
@@ -68,7 +152,9 @@ export default function Login() {
               </View>
 
               <Text style={styles.brand}>Auvyant</Text>
-              <Text style={styles.tagline}>LANGUAGE LEARNING</Text>
+              <Text style={styles.tagline}>
+                LANGUAGE LEARNING
+              </Text>
             </View>
 
             {/* Heading */}
@@ -105,6 +191,7 @@ export default function Login() {
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  editable={!isLoading}
                 />
               </View>
 
@@ -121,11 +208,13 @@ export default function Login() {
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
                   autoCorrect={false}
+                  editable={!isLoading}
                 />
 
                 <TouchableOpacity
                   onPress={() => setShowPassword(!showPassword)}
                   hitSlop={10}
+                  disabled={isLoading}
                 >
                   <Text style={styles.showText}>
                     {showPassword ? "Hide" : "Show"}
@@ -142,18 +231,33 @@ export default function Login() {
                     "Password reset will be available after authentication is connected."
                   )
                 }
+                disabled={isLoading}
               >
-                <Text style={styles.forgotText}>Forgot password?</Text>
+                <Text style={styles.forgotText}>
+                  Forgot password?
+                </Text>
               </TouchableOpacity>
 
               {/* Login button */}
               <TouchableOpacity
-                style={styles.loginButton}
+                style={[
+                  styles.loginButton,
+                  isLoading && styles.disabledButton,
+                ]}
                 onPress={handleLogin}
                 activeOpacity={0.85}
+                disabled={isLoading}
               >
-                <Text style={styles.loginButtonText}>Log In</Text>
-                <Text style={styles.buttonArrow}>→</Text>
+                {isLoading ? (
+                  <ActivityIndicator color="#FFFFFF" />
+                ) : (
+                  <>
+                    <Text style={styles.loginButtonText}>
+                      Log In
+                    </Text>
+                    <Text style={styles.buttonArrow}>→</Text>
+                  </>
+                )}
               </TouchableOpacity>
 
               {/* Signup link */}
@@ -164,8 +268,11 @@ export default function Login() {
 
                 <TouchableOpacity
                   onPress={() => router.replace("/signup")}
+                  disabled={isLoading}
                 >
-                  <Text style={styles.signupLink}>Sign up</Text>
+                  <Text style={styles.signupLink}>
+                    Sign up
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -182,6 +289,7 @@ export default function Login() {
             <Text style={styles.footer}>
               Every word takes you somewhere new.
             </Text>
+
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -448,6 +556,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
+  },
+
+  disabledButton: {
+    opacity: 0.65,
   },
 
   loginButtonText: {

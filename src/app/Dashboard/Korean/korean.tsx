@@ -1,27 +1,20 @@
-
-const korean = {
-    name: "Korean",
-    welcome: "한국어를 배워 봅시다!",
-    subtitle: "Let's learn Korean!",
+type LanguageContent = {
+    greeting: string;
+    meaning: string;
+    words: {
+      word: string;
+      translation: string;
+    }[];
+  };
   
-    lessons: [
-      {
-        id: 1,
-        title: "Learn Hangul",
-        description: "Discover the Korean alphabet.",
-      },
-      {
-        id: 2,
-        title: "Basic Greetings",
-        description: "Learn everyday Korean greetings.",
-      },
-      {
-        id: 3,
-        title: "First Conversations",
-        description: "Start speaking simple Korean.",
-      },
+  const Korean: LanguageContent = {
+    greeting: "안녕하세요",
+    meaning: "Hello",
+    words: [
+      { word: "감사합니다", translation: "Thank you" },
+      { word: "네", translation: "Yes" },
+      { word: "아니요", translation: "No" },
     ],
   };
   
-  export default korean;
-  
+  export default Korean;
